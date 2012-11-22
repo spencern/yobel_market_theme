@@ -1,0 +1,30 @@
+
+
+
+<ul id="collection-grid" class="product-grid">
+  {% assign vendor_list = '' %}
+  {% for a_collection in collections %}
+  {% paginate a_collection.products by 2000 %} 
+    {% for product in a_collection.products %}
+      {% if vendor_list contains product.vendor %}
+      {% else %}
+       <li class="{% cycle '', '', '', ' last-in-row' %}">
+        <div class="product-grid-item">
+          <div class="collection-image">
+            <a href="/collections/vendors?q={{ product.vendor | escape }}" title="Browse our {{ product.vendor | escape }} collection">
+              <img src="{{ product.featured_image | product_img_url: 'medium' }}" class="product-photo" alt="{{ product.title | escape }}" />
+            </a>
+          </div>
+          <div class="product-information">
+            <a href="/collections/vendors?q={{ product.vendor | escape }}" >
+              {{ product.vendor | escape }}
+            </a>
+          </div>
+        </div>
+      </li>
+        {% capture temp %}{{ vendor_list }}{{ product.vendor }}{% endcapture %}{% assign vendor_list = temp %}
+      {% endif %}
+    {% endfor %}
+  {% endpaginate %}
+  {% endfor %}
+</ul>
